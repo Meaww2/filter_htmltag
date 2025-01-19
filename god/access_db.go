@@ -25,7 +25,6 @@ func AcessDB() (*sql.DB, error) {
 	if err != nil {
 		log.Fatalf("Unable to connect: %v\n", err)
 	}
-	defer db.Close()
 
 	// Test the connection
 	err = db.Ping()

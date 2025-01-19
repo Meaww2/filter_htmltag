@@ -40,6 +40,8 @@ func main() {
 			break
 		}
 	}
+
+	db.Close()
 	// save data to database name content
 	// content must be remove tag already
 	// url must be remove query param(?)
