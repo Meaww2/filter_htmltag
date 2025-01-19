@@ -21,7 +21,7 @@ func main() {
 	buffer_out := 3
 	html_ch := make(chan god.HTMLcontent, buffer_in)
 	content_ch := make(chan god.DBobj, buffer_out)
-	monitor_ch := make(chan int, worker)
+	monitor_ch := make(chan int, 1)
 
 	// query data
 	god.Query_raw(db, html_ch)
@@ -29,12 +29,16 @@ func main() {
 	//
 	for i := 0; i < worker; i++ {
 		// call filter_tag()
-		go god.Filter_tag(html_ch, content_ch)
+		go god.Filter_tag(html_ch, content_ch, monitor_ch)
 		go god.Save_record(db, content_ch, monitor_ch)
 	}
 
+	// add 1000 record for 1 execute
 	for {
-
+		count := <-monitor_ch
+		if count == 1006 {
+			break
+		}
 	}
 	// save data to database name content
 	// content must be remove tag already

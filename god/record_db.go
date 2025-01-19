@@ -18,15 +18,17 @@ func Save_record(db *sql.DB, content_ch chan DBobj, monitor_ch chan int) {
 	`
 
 	for {
+		count := <-monitor_ch
+		if count >= 1000 {
+			count++
+			monitor_ch <- count
+			break
+		}
 		record := <-content_ch
 		_, err := db.Exec(statement, record.site, record.content)
 		if err != nil {
 			log.Fatalf("Site: '%s' is error!", record.site)
 			panic(err)
-		} else {
-			d := <-monitor_ch
-			d += 1
-			monitor_ch <- d
 		}
 	}
 

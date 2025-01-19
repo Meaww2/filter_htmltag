@@ -6,9 +6,14 @@ import (
 
 // How to optimize Skiping
 
-func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) string {
+func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj, monitor_ch chan int) {
 	for {
-
+		count := <-monitor_ch
+		if count >= 1000 {
+			count++
+			monitor_ch <- count
+			break
+		}
 		raw_data := <-html_ch
 		site, temp_data := raw_data.Site, raw_data.Content
 

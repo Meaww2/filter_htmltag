@@ -25,9 +25,12 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent) {
 		log.Fatalf("Can't Query data cause: %v", err)
 	}
 	defer rows.Close()
-
+	count := 1
 	go func() {
 		for rows.Next() {
+			if count == 1000 {
+				break
+			}
 			var html HTMLcontent
 
 			if err := rows.Scan(&html.Site, &html.Content); err != nil {
