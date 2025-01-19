@@ -3,6 +3,7 @@ package god
 import (
 	"database/sql"
 	"log"
+	"time"
 )
 
 type HTMLcontent struct {
@@ -44,5 +45,6 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent) {
 			log.Println("Scan success:", count)
 		}
 	}()
+	time.Sleep(time.Second * 10)
 
 }
