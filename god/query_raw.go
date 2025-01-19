@@ -35,6 +35,7 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent) {
 			var html HTMLcontent
 
 			if err := rows.Scan(&html.Site, &html.Content); err != nil {
+				log.Fatalf("Query fail cause: %v", err)
 				continue
 			}
 
