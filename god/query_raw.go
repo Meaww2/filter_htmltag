@@ -2,7 +2,6 @@ package god
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 )
 
@@ -26,6 +25,7 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent) {
 		log.Fatalf("Can't Query data cause: %v", err)
 	}
 	defer rows.Close()
+	log.Println("<<<Start Query>>>")
 	count := 1
 	go func() {
 		for rows.Next() {
@@ -41,7 +41,7 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent) {
 
 			html_ch <- html
 			count++
-			fmt.Println("Scan success:", count)
+			log.Println("Scan success:", count)
 		}
 	}()
 

@@ -2,7 +2,6 @@ package god
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 )
 
@@ -33,7 +32,7 @@ func Save_record(db *sql.DB, content_ch chan DBobj, monitor_ch chan int) {
 		} else {
 			count++
 			monitor_ch <- count
-			fmt.Println("Record success:", count)
+			log.Println("Record success:", count)
 		}
 	}
 

@@ -1,7 +1,7 @@
 package god
 
 import (
-	"fmt"
+	"log"
 	"strings"
 )
 
@@ -87,7 +87,7 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj, monitor_ch chan
 		var record DBobj
 		record.site = site
 		record.content = content
-		fmt.Println("Filter success:", content)
+		log.Println("Filter success:", content)
 		content_ch <- record
 
 	}
