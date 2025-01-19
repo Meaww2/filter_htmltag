@@ -28,6 +28,7 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent, worker int) {
 		log.Fatalf("Can't Query data cause: %v", err)
 	}
 	defer rows.Close()
+
 	log.Println("<<<Start Query>>>")
 	count := 1
 

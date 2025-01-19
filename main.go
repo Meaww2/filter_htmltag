@@ -33,6 +33,9 @@ func main() {
 		go god.Save_record(db, content_ch)
 	}
 
+	for {
+
+	}
 	// add 1000 record for 1 execute
 	// for {
 	// 	count := <-end_ch
