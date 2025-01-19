@@ -1,7 +1,6 @@
 package god
 
 import (
-	"log"
 	"strings"
 )
 
@@ -56,13 +55,13 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 				continue
 			}
 			// skip reference ex. [1]
-			if body[0:10] == "<spanclass" {
-				i = strings.Index(body[10:], "<spanclass")
-				body = body[i+20:]
-				i = strings.Index(body, "</span>")
-				body = body[i+6:]
-				continue
-			}
+			// if body[0:10] == "<spanclass" {
+			// 	i = strings.Index(body[10:], "<spanclass")
+			// 	body = body[i+20:]
+			// 	i = strings.Index(body, "</span>")
+			// 	body = body[i+6:]
+			// 	continue
+			// }
 
 			// filter
 			if body[0] == '<' {
@@ -87,7 +86,6 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 		content := strings.Join(lst_content, "\n")
 		record.site = site
 		record.content = content
-		log.Println("Filter success:", content)
 		content_ch <- record
 
 	}
