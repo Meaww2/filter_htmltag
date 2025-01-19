@@ -13,7 +13,7 @@ type HTMLcontent struct {
 func Query_raw(db *sql.DB, html_ch chan HTMLcontent) {
 
 	statement := `
-	SELECT site, raw 
+	SELECT raw_data.site, raw 
 	FROM raw_data 
 	LEFT JOIN content 
 	ON content.content IS NULL;
