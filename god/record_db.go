@@ -2,6 +2,7 @@ package god
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 )
 
@@ -29,6 +30,10 @@ func Save_record(db *sql.DB, content_ch chan DBobj, monitor_ch chan int) {
 		if err != nil {
 			log.Fatalf("Site: '%s' is error!", record.site)
 			panic(err)
+		} else {
+			count++
+			monitor_ch <- count
+			fmt.Println("Record success:", count)
 		}
 	}
 

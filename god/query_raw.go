@@ -2,6 +2,7 @@ package god
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 )
 
@@ -38,6 +39,8 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent) {
 			}
 
 			html_ch <- html
+			count++
+			fmt.Println("Scan success:", count)
 		}
 	}()
 

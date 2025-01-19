@@ -1,6 +1,7 @@
 package god
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -14,6 +15,7 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj, monitor_ch chan
 			monitor_ch <- count
 			break
 		}
+		monitor_ch <- count
 		raw_data := <-html_ch
 		site, temp_data := raw_data.Site, raw_data.Content
 
@@ -85,7 +87,9 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj, monitor_ch chan
 		var record DBobj
 		record.site = site
 		record.content = content
+		fmt.Println("Filter success:", content)
 		content_ch <- record
+
 	}
 
 }
