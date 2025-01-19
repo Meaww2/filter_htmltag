@@ -8,9 +8,10 @@ import (
 type DBobj struct {
 	site    string
 	content string
+	IsDone  bool
 }
 
-func Save_record(db *sql.DB, content_ch chan DBobj, monitor_ch chan int) {
+func Save_record(db *sql.DB, content_ch chan DBobj) {
 
 	statement := `
 	INSERT INTO content (site, content)
@@ -18,22 +19,17 @@ func Save_record(db *sql.DB, content_ch chan DBobj, monitor_ch chan int) {
 	`
 
 	for {
-		count := <-monitor_ch
-		if count >= 1000 {
-			count++
-			monitor_ch <- count
-			break
-		}
+
 		record := <-content_ch
+		if record.IsDone {
+			return
+		}
 		_, err := db.Exec(statement, record.site, record.content)
 		if err != nil {
 			log.Fatalf("Site: '%s' is error!", record.site)
 			panic(err)
-		} else {
-			count++
-			monitor_ch <- count
-			log.Println("Record success:", count)
 		}
+		log.Println("Record success:")
 	}
 
 }

@@ -7,16 +7,17 @@ import (
 
 // How to optimize Skiping
 
-func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj, monitor_ch chan int) {
+func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 	for {
-		count := <-monitor_ch
-		if count >= 1000 {
-			count++
-			monitor_ch <- count
-			break
-		}
-		monitor_ch <- count
 		raw_data := <-html_ch
+		var record DBobj
+		record.IsDone = false
+		if raw_data.IsDone {
+			record.IsDone = true
+			content_ch <- record
+			return
+		}
+
 		site, temp_data := raw_data.Site, raw_data.Content
 
 		// replace " ", "\n" to ""
@@ -84,7 +85,6 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj, monitor_ch chan
 
 		// pack data by get content between ">" and "<" than split by "\n"
 		content := strings.Join(lst_content, "\n")
-		var record DBobj
 		record.site = site
 		record.content = content
 		log.Println("Filter success:", content)

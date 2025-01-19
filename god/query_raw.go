@@ -3,15 +3,17 @@ package god
 import (
 	"database/sql"
 	"log"
+	"os"
 	"time"
 )
 
 type HTMLcontent struct {
 	Site    string
 	Content string
+	IsDone  bool
 }
 
-func Query_raw(db *sql.DB, html_ch chan HTMLcontent) {
+func Query_raw(db *sql.DB, html_ch chan HTMLcontent, worker int) {
 
 	statement := `
 	SELECT raw_data.site, raw 
@@ -28,23 +30,29 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent) {
 	defer rows.Close()
 	log.Println("<<<Start Query>>>")
 	count := 1
-	go func() {
-		for rows.Next() {
-			if count == 1000 {
-				break
-			}
-			var html HTMLcontent
 
-			if err := rows.Scan(&html.Site, &html.Content); err != nil {
-				log.Fatalf("Query fail cause: %v", err)
-				continue
+	for rows.Next() {
+		var html HTMLcontent
+		html.IsDone = false
+		if count == 1000 {
+			html.IsDone = true
+			for i := 0; i < worker; i++ {
+				html_ch <- html
 			}
-
-			html_ch <- html
-			count++
-			log.Println("Scan success:", count)
+			time.Sleep(time.Second * 60)
+			db.Close()
+			os.Exit(0)
+			break
 		}
-	}()
-	time.Sleep(time.Second * 10)
+
+		if err := rows.Scan(&html.Site, &html.Content); err != nil {
+			log.Fatalf("Query fail cause: %v", err)
+			continue
+		}
+
+		html_ch <- html
+		count++
+		log.Println("Scan success:", count)
+	}
 
 }
