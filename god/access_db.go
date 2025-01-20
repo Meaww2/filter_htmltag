@@ -4,22 +4,28 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
+	"strconv"
 
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "admin"
-	password = "kasldlkasjf"
-	dbname   = "alphadict"
-)
-
 func AcessDB() (*sql.DB, error) {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+	var (
+		host     = os.Getenv("HOST")
+		port     = os.Getenv("PORT")
+		user     = os.Getenv("DB_USER")
+		password = os.Getenv("PASSWORD_DB")
+		dbname   = os.Getenv("DBNAME")
+	)
+
+	_port, err := strconv.Atoi(port)
+	if err != nil {
+		log.Fatalf("Convert string port to int fail!: %v", err)
+	}
+	log.Println(user, password, host, port, dbname)
+	psqlInfo := fmt.Sprintf("user=%s password=%s host=%s port=%d dbname=%s sslmode=disable",
+		user, password, host, _port, dbname)
 
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {

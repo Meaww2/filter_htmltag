@@ -88,12 +88,11 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 			}
 
 			// skip blank string
-			if temp != "" {
+			if temp != "" && temp != lst_content[len(lst_content)-1] {
 				lst_content = append(lst_content, temp)
 			}
 			body = body[i:]
 		}
-
 		// pack data by get content between ">" and "<" than split by "\n"
 		content := strings.Join(lst_content, "\n")
 		record.site = site

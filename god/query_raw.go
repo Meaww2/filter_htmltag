@@ -34,27 +34,29 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent, worker int) {
 	count := 1
 
 	for rows.Next() {
+		log.Println(rows)
 		var html HTMLcontent
-		html.IsDone = false
 		if count == 1000 {
-			html.IsDone = true
-			for i := 0; i < worker; i++ {
-				html_ch <- html
-			}
-			time.Sleep(time.Second * 60)
-			db.Close()
-			os.Exit(0)
 			break
 		}
-
 		if err := rows.Scan(&html.Site, &html.Content); err != nil {
 			log.Fatalf("Query fail cause: %v", err)
 			continue
 		}
 
+		log.Print("Scan success:")
 		html_ch <- html
-		log.Println("Scan success:", count)
+		log.Println(count)
 		count++
 	}
+
+	var html HTMLcontent
+	html.IsDone = true
+	for i := 0; i < worker; i++ {
+		html_ch <- html
+	}
+	time.Sleep(time.Second * 60)
+	db.Close()
+	os.Exit(0)
 
 }
