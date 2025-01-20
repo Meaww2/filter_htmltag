@@ -19,7 +19,8 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent, worker int) {
 	SELECT raw_data.site, raw 
 	FROM raw_data 
 	LEFT JOIN content 
-	ON content.content IS NULL;
+	ON content.site = raw_data.site
+	WHERE content.site IS NULL;
 	`
 
 	rows, err := db.Query(statement)
