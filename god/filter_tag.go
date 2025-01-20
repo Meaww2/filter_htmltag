@@ -28,6 +28,7 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 		// replace " ", "\n" to ""
 		temp_data = strings.Replace(temp_data, "\n", "", -1)
 		temp_data = strings.Replace(temp_data, " ", "", -1)
+		temp_data = strings.ToLower(temp_data)
 		// filter <body>
 		start_body := strings.Index(temp_data, "<body")
 
