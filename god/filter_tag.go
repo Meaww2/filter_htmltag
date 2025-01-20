@@ -35,19 +35,19 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 		temp := ""
 		for i < len(body) {
 			// skip comment
-			if body[0:4] == "<!--" {
+			if len(body) >= 4 || body[0:4] == "<!--" {
 				i = strings.Index(body, "-->")
 				body = body[i+3:]
 				continue
 			}
 			// skip script
-			if body[0:8] == "<script>" {
+			if len(body) >= 8 || body[0:8] == "<script>" {
 				i = strings.Index(body, "</script>")
 				body = body[i+8:]
 				continue
 			}
 			// skip style
-			if body[0:6] == "<style" {
+			if len(body) >= 6 || body[0:6] == "<style" {
 				i = strings.Index(body, "</style")
 				body = body[i+6:]
 				i = strings.Index(body, ">")
@@ -55,13 +55,13 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 				continue
 			}
 			// skip reference ex. [1]
-			// if body[0:10] == "<spanclass" {
-			// 	i = strings.Index(body[10:], "<spanclass")
-			// 	body = body[i+20:]
-			// 	i = strings.Index(body, "</span>")
-			// 	body = body[i+6:]
-			// 	continue
-			// }
+			if len(body) >= 10 || body[0:10] == "<spanclass" {
+				i = strings.Index(body[10:], "<spanclass")
+				body = body[i+20:]
+				i = strings.Index(body, "</span>")
+				body = body[i+6:]
+				continue
+			}
 
 			// filter
 			if body[0] == '<' {
