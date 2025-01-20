@@ -53,8 +53,8 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent, worker int) {
 		}
 
 		html_ch <- html
-		count++
 		log.Println("Scan success:", count)
+		count++
 	}
 
 }
