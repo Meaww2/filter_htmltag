@@ -24,12 +24,12 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 		temp_data = strings.Replace(temp_data, " ", "", -1)
 		// filter <body>
 		start_body := strings.Index(temp_data, "<body")
-		end_body := strings.Index(temp_data[start_body:], "</body>") + start_body
 
-		if start_body < 0 || end_body < 0 {
+		if start_body < 0 {
 			continue
 		}
 
+		end_body := strings.Index(temp_data[start_body:], "</body>") + start_body
 		body := temp_data[start_body : end_body+7]
 
 		// get content
