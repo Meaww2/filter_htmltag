@@ -19,6 +19,10 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 
 		site, temp_data := raw_data.Site, raw_data.Content
 
+		if temp_data == "" {
+			continue
+		}
+
 		// replace " ", "\n" to ""
 		temp_data = strings.Replace(temp_data, "\n", "", -1)
 		temp_data = strings.Replace(temp_data, " ", "", -1)
