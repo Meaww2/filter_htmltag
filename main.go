@@ -7,9 +7,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type ConfigGO struct {
-}
-
 func main() {
 	// acess database
 	err := godotenv.Load("./.env")

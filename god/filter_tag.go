@@ -21,6 +21,7 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 		site, temp_data := raw_data.Site, raw_data.Content
 
 		if temp_data == "" {
+			log.Printf("Skip %s cause not have data", site)
 			continue
 		}
 
@@ -88,6 +89,7 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 			}
 
 			// skip blank string
+
 			if temp != "" && temp != lst_content[len(lst_content)-1] {
 				lst_content = append(lst_content, temp)
 			}
@@ -98,6 +100,7 @@ func Filter_tag(html_ch chan HTMLcontent, content_ch chan DBobj) {
 		record.site = site
 		record.content = content
 		content_ch <- record
+		log.Printf("Filter %s success!", site)
 
 	}
 

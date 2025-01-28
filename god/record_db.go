@@ -29,7 +29,7 @@ func Save_record(db *sql.DB, content_ch chan DBobj) {
 			log.Fatalf("Site: '%s' is error!", record.site)
 			panic(err)
 		}
-		log.Println("Record success:")
+		log.Printf("Record %s success.", record.site)
 	}
 
 }

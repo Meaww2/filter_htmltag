@@ -34,8 +34,8 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent, worker int) {
 	count := 1
 
 	for rows.Next() {
-		log.Println(rows)
 		var html HTMLcontent
+		log.Printf("Scanning No.%d", count)
 		if count == 1000 {
 			break
 		}
@@ -55,7 +55,8 @@ func Query_raw(db *sql.DB, html_ch chan HTMLcontent, worker int) {
 	for i := 0; i < worker; i++ {
 		html_ch <- html
 	}
-	time.Sleep(time.Second * 60)
+	log.Println("<<<End Query>>>")
+	time.Sleep(time.Second * 10)
 	db.Close()
 	os.Exit(0)
 
